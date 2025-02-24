@@ -1,7 +1,7 @@
 const { createRule } = require("./utils");
 
 module.exports = createRule({
-  name: "no-undefined-union-in-args",
+  name: "no-union-args",
   meta: {
     type: "problem",
     docs: {
@@ -18,19 +18,21 @@ module.exports = createRule({
   create(context) {
     return {
       TSUnionType(node) {
-        if (
-          node.types.some((t) => t.type === "TSUndefinedKeyword") &&
-          context
-            .getAncestors()
-            .some(
-              (ancestor) =>
-                ancestor.type === "Decorator" &&
-                ancestor.expression.type === "CallExpression" &&
-                ancestor.expression.callee.type === "Identifier" &&
-                ancestor.expression.callee.name === "Args",
+        if (node.types.some((t) => t.type === "TSUndefinedKeyword")) {
+          const parent = node.parent; // usually the TSTypeAnnotation node
+          const classProp = parent && parent.parent; // the class property
+          if (
+            classProp &&
+            Array.isArray(classProp.decorators) &&
+            classProp.decorators.some(
+              (decorator) =>
+                decorator.expression &&
+                decorator.expression.type === "CallExpression" &&
+                decorator.expression.callee.name === "Args",
             )
-        ) {
-          context.report({ node, messageId: "noUndefinedUnion" });
+          ) {
+            context.report({ node, messageId: "noUndefinedUnion" });
+          }
         }
       },
     };

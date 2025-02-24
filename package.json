@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +12,9 @@
   "dependencies": {
     "@typescript-eslint/parser": "^8.24.1",
     "@typescript-eslint/utils": "^8.24.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/rule-tester": "^8.24.1",
+    "mocha": "^11.1.0"
   }
 }
