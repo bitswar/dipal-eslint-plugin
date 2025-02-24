@@ -1,7 +1,6 @@
 const noUnionArgs = require("./rules/no-union-args");
-const pkg = JSON.parse(
-  fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-);
+const fs = require("fs");
+const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
 
 const plugin = {
   meta: {
